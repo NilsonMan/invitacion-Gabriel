@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invitación XV Años - Emanuel</title>
+
+<!-- Fuentes -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+    background: #0a0a0a;
+    color: #0ff;
+    overflow-x: hidden;
+  }
+
+  /* Contenedor general para secciones de página completa */
+  .section {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Primera sección: texto principal */
+  #section1 h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 5rem;
+    color: #0ff;
+    text-shadow:
+      0 0 8px #0ff,
+      0 0 20px #0ff;
+    animation: neonFlicker 3s infinite alternate;
+  }
+
+  #section1 p.subtitle {
+    font-size: 1.8rem;
+    margin-top: 1rem;
+    font-weight: 600;
+    color: #33ffffcc;
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+
+  #section1 .highlight {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;
+    margin-top: 1.2rem;
+    color: #0ff;
+    text-shadow:
+      0 0 10px #0ff,
+      0 0 30px #0ff;
+    font-style: italic;
+  }
+
+  /* Segundo panel - info extra */
+  #section2 {
+    background: #070707cc;
+  }
+
+  #section2 h2 {
+    font-weight: 700;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px #0ff;
+  }
+
+  #section2 p {
+    max-width: 600px;
+    margin: 1rem auto;
+    font-size: 1.4rem;
+    color: #44ffffcc;
+    line-height: 1.6;
+  }
+
+  /* Tercer panel - mapa */
+  #section3 {
+    background: #000c14;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  #section3 h2 {
+    font-weight: 700;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 8px #0ff;
+  }
+
+  #section3 p {
+    font-size: 1.3rem;
+    color: #33ffffcc;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Contenedor mapa */
+  #map-container {
+    width: 90vw;
+    max-width: 600px;
+    height: 350px;
+    border-radius: 10px;
+    box-shadow:
+      0 0 15px #0ff;
+    overflow: hidden;
+  }
+
+  /* Efecto parpadeo neón */
+  @keyframes neonFlicker {
+    0%, 100% {
+      text-shadow:
+        0 0 8px #0ff,
+        0 0 20px #0ff;
+      opacity: 1;
+    }
+    50% {
+      text-shadow:
+        0 0 12px #0ff,
+        0 0 30px #0ff;
+      opacity: 0.85;
+    }
+  }
+
+  /* Link mapa */
+  #map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0ff;
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-decoration: none;
+    text-shadow: 0 0 6px #0ff;
+    transition: color 0.3s ease;
+  }
+  #map-link:hover {
+    color: #44ffff;
+  }
+
+  /* Icono de ubicación */
+  .map-icon {
+    width: 22px;
+    height: 22px;
+    fill: #0ff;
+    filter: drop-shadow(0 0 6px #0ff);
+  }
+
+  /* Fondo de partículas */
+  #particles {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Ocultar iframe en móvil y mostrar botón */
+  @media (max-width: 768px) {
+    #map-container iframe {
+      display: none;
+    }
+    #mobile-map-button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: #0ff;
+      color: #000;
+      font-weight: 700;
+      font-size: 1.4rem;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 0 10px #0ff;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+    #mobile-map-button:hover {
+      background: #44ffff;
+    }
+  }
+
+  /* Por defecto escondemos el botón móvil */
+  #mobile-map-button {
+    display: none;
+  }
+</style>
+
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- Sección 1 -->
+<section id="section1" class="section" aria-label="Primera página invitación">
+  <h1>Estás invitado!</h1>
+  <p class="subtitle">A los inolvidables XV años de</p>
+  <div class="highlight">Emanuel Hernández</div>
+</section>
+
+<!-- Sección 2 -->
+<section id="section2" class="section" aria-label="Segunda página información extra">
+  <h2>¡No te lo puedes perder!</h2>
+  <p>Ven a celebrar una noche inolvidable con música en vivo, deliciosa comida y la mejor compañía.</p>
+  <p>Habrá sorpresas, regalos y momentos para recordar toda la vida.</p>
+  <p>Confirma tu asistencia y prepárate para divertirte a lo grande.</p>
+</section>
+
+<!-- Sección 3 -->
+<section id="section3" class="section" aria-label="Tercera página ubicación">
+  <h2>Ubicación</h2>
+  <p>Salón "Luna Real", Ciudad de México</p>
+
+  <a id="map-link" href="https://maps.app.goo.gl/KN6QDAJpS1XiAnY98?g_st=com.google.maps.preview.copy" target="_blank" rel="noopener noreferrer" aria-label="Abrir ubicación en Google Maps">
+    <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.22-2.5 5.44-5 8.55C9.5 14.44 7 11.22 7 9z"/>
+      <circle cx="12" cy="9" r="2.5"/>
+    </svg>
+    Ver en Google Maps
+  </a>
+
+  <div id="map-container" aria-label="Mapa del Salón Luna Real, Ciudad de México">
+    <!-- Iframe solo visible en escritorio -->
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.7332981522046!2d-99.16699958473558!3d19.43329704306868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff5b3c5f3db3%3A0xe1db83710e8260f3!2sSal%C3%B3n%20Luna%20Real!5e0!3m2!1ses!2smx!4v1688423451981!5m2!1ses!2smx" 
+      width="100%" 
+      height="100%" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade"
+      aria-hidden="true"
+      aria-label="Mapa embebido">
+    </iframe>
+  </div>
+
+  <!-- Botón para móvil -->
+  <a id="mobile-map-button" href="https://maps.app.goo.gl/KN6QDAJpS1XiAnY98?g_st=com.google.maps.preview.copy" target="_blank" rel="noopener noreferrer" aria-label="Abrir ubicación en Google Maps app">
+    Abrir mapa en Google Maps
+  </a>
+</section>
+
+<audio autoplay loop src="https://www.bensound.com/bensound-music/bensound-dreams.mp3" type="audio/mp3" aria-label="Música de fondo"></audio>
+
+<script>
+  // Partículas animadas de fondo
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const particlesDiv = document.getElementById('particles');
+  let w, h;
+  let particlesArray = [];
+
+  function resize() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  particlesDiv.appendChild(canvas);
+
+  class Particle {
+    constructor(){
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.radius = Math.random() * 1.5 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.3;
+      this.opacity = Math.random();
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if(this.x > w) this.x = 0;
+      else if(this.x < 0) this.x = w;
+      if(this.y > h) this.y = 0;
+      else if(this.y < 0) this.y = h;
+      this.opacity += (Math.random() - 0.5) * 0.05;
+      this.opacity = Math.min(Math.max(this.opacity, 0.2), 1);
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(0, 255, 255, ${this.opacity})`;
+      ctx.shadowColor = '#0ff';
+      ctx.shadowBlur = 6;
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particlesArray = [];
+    for(let i=0; i < 120; i++) {
+      particlesArray.push(new Particle());
+    }
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, w, h);
+    particlesArray.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animateParticles);
+  }
+
+  initParticles();
+  animateParticles();
+</script>
+
+</body>
+</html>
