@@ -30,7 +30,7 @@
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    z-index: 5; /* Debajo del sobre */
+    z-index: 5;
     background: transparent;
   }
 
@@ -122,11 +122,10 @@
     width: 280px;
     height: 350px;
     background: #070707cc;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 0 15px #0ff;
+    border-radius: 0;
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.7);
-    transition: opacity 1s ease 0.5s, transform 1s ease 0.5s, width 1s ease 0.5s, height 1s ease 0.5s, top 1s ease 0.5s, left 1s ease 0.5s, border-radius 1s ease 0.5s;
+    transition: opacity 1s ease 0.5s, transform 1s ease 0.5s, width 1s ease 0.5s, height 1s ease 0.5s, top 1s ease 0.5s, left 1s ease 0.5s;
     overflow-y: hidden;
     padding: 0;
     color: #0ff;
@@ -134,73 +133,59 @@
     cursor: default;
     display: flex;
     flex-direction: column;
+    box-shadow: none !important;
+    border: none !important;
   }
 
   #content.visible {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-    width: 80vw;
-    max-width: 720px;
+    width: 100vw;
+    max-width: 100%;
     height: 100vh;
     top: 50%;
     left: 50%;
-    border-radius: 0;
     overflow-y: auto;
-    padding: 2rem 4rem;
+    padding: 0;
   }
 
-  /* Tus secciones quedan intactas, sin cambios */
   .section {
     height: 100vh;
     width: 100%;
-    max-width: 720px;
-    margin: 0 auto;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:2rem;
-    text-align:center;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    text-align: center;
     position: relative;
     z-index: 10;
     opacity: 0;
     transform: translateY(40px);
-    transition: opacity 1s ease, transform 1s ease, filter 1s ease;
+    transition: opacity 1s ease, transform 1s ease;
     scroll-snap-align: start;
     flex-shrink: 0;
+    border: none !important;
+    outline: none !important;
   }
 
   .section.visible { opacity: 1; transform: translateY(0); }
 
   #section1 {
-    background-image: url("https://i.pinimg.com/736x/03/f8/db/03f8dbe4a50089c182f65af43605673d.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: linear-gradient(135deg, #0a0a0a 0%, #121212 100%);
     position: relative;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-    backdrop-filter: brightness(0.8) contrast(1.1);
-    max-width: 720px;
-    margin: 0 auto;
-  }
-
-  #section1::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
-    background: rgba(7, 7, 7, 0.6);
-    backdrop-filter: blur(3px);
-    z-index: 1;
-    border-radius: 12px;
   }
 
   #section1 * {
     position: relative;
     z-index: 2;
+    margin: 1rem;
+    padding: 0;
   }
 
   #section1 p.subtitle {
@@ -221,7 +206,10 @@
     font-style:italic;
   }
 
-  #section2, #section3 { background:#070707cc; }
+  #section2, #section3 { 
+    background:#070707cc; 
+    padding: 2rem;
+  }
 
   #section2 h2, #section3 h2 {
     font-weight:700;
@@ -235,16 +223,18 @@
     font-size:1.3rem;
     color:#33ffffcc;
     margin-bottom:0.5rem;
+    max-width: 800px;
   }
 
   #map-container {
-    width:90vw;
+    width:90%;
     max-width:600px;
     height:350px;
     border-radius:10px;
-    box-shadow:0 0 15px #0ff;
     overflow:hidden;
-    margin-top: 1rem;
+    margin: 1rem auto;
+    border: 2px solid #0ff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
   }
 
   #scroll-container {
@@ -252,16 +242,26 @@
     overflow-y: auto;
     scroll-snap-type: y mandatory;
     -webkit-overflow-scrolling: touch;
+    width: 100%;
   }
 
-  /* CONTENEDOR PARA CENTRAR BOTON Y TEXTO FUERA DEL SOBRE */
   #button-text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 1rem;
-    user-select:none;
+    justify-content: center;
     z-index: 60;
+    user-select:none;
+    pointer-events: none;
+  }
+
+  #open-button, #closed-text {
+    pointer-events: auto;
+    text-align: center;
   }
 
   #open-button {
@@ -310,7 +310,75 @@
     width: 100%;
     height: 100%;
     display: none;
-    overflow: visible;
+  }
+
+  .map-icon {
+    width: 20px;
+    height: 20px;
+    fill: #0ff;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  #map-link, #mobile-map-button {
+    display: inline-block;
+    margin: 1rem 0;
+    padding: 0.8rem 1.5rem;
+    background: rgba(0, 255, 255, 0.2);
+    color: #0ff;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid #0ff;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+
+  #map-link:hover, #mobile-map-button:hover {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 15px #0ff;
+  }
+
+  #mobile-map-button {
+    display: none;
+    margin: 1rem auto;
+    width: 90%;
+    max-width: 300px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    .section {
+        padding: 0.5rem;
+    }
+    
+    #section1 .highlight {
+        font-size: 2.5rem;
+    }
+    
+    #section1 p.subtitle {
+        font-size: 1.2rem;
+    }
+    
+    #section2 h2, #section3 h2 {
+        font-size: 2rem;
+    }
+    
+    #section2 p, #section3 p {
+        font-size: 1rem;
+    }
+    
+    #map-container {
+        width: 95%;
+        height: 250px;
+    }
+
+    #map-link {
+        display: none;
+    }
+
+    #mobile-map-button {
+        display: block;
+    }
   }
 </style>
 </head>
@@ -324,7 +392,6 @@
       <div id="content" tabindex="0" role="region" aria-live="polite" aria-label="Contenido de la invitación">
         <canvas id="particles"></canvas>
         <div id="scroll-container">
-          <!-- Aquí tus 3 secciones originales, sin modificar -->
           <section id="section1" class="section">
             <h1>Estás invitado!</h1>
             <p class="subtitle">A los inolvidables XV años de</p>
@@ -353,7 +420,6 @@
     </div>
   </div>
 
-  <!-- Contenedor nuevo para centrar botón y texto fuera del sobre -->
   <div id="button-text-container">
     <button id="open-button" aria-label="Abrir invitación">Abrir Invitación</button>
     <div id="closed-text">Toca "Abrir Invitación" para ver la invitación completa</div>
@@ -364,19 +430,31 @@
   </audio>
 
 <script>
-  // Partículas internas
+  // Partículas internas - Versión corregida
   const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
   const contentDiv = document.getElementById('content');
 
   let w, h;
   let particlesArray = [];
+  let animationFrameId;
 
   function resize() {
     w = contentDiv.clientWidth;
     h = contentDiv.clientHeight;
     canvas.width = w;
     canvas.height = h;
+    
+    // Asegurar relación de aspecto correcta
+    const aspectRatio = w / h;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // Resetear transformación
+    if(aspectRatio > 1) {
+      // Pantalla ancha
+      ctx.scale(1, 1);
+    } else {
+      // Pantalla alta
+      ctx.scale(1, 1);
+    }
   }
 
   window.addEventListener('resize', () => {
@@ -411,13 +489,20 @@
 
     draw() {
       ctx.beginPath();
-      let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 5);
-      gradient.addColorStop(0, `rgba(255, 255, 150, ${this.opacity})`);
-      gradient.addColorStop(1, 'rgba(255, 255, 150, 0)');
+      // Usar círculos perfectos en lugar de elipses
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      
+      // Gradiente circular uniforme
+      const gradient = ctx.createRadialGradient(
+        this.x, this.y, 0,
+        this.x, this.y, this.radius * 2
+      );
+      gradient.addColorStop(0, `rgba(0, 255, 255, ${this.opacity})`);
+      gradient.addColorStop(1, 'rgba(0, 255, 255, 0)');
+      
       ctx.fillStyle = gradient;
-      ctx.shadowColor = `rgba(255, 255, 150, ${this.opacity})`;
-      ctx.shadowBlur = 15;
-      ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+      ctx.shadowColor = `rgba(0, 255, 255, ${this.opacity * 0.5})`;
+      ctx.shadowBlur = 10;
       ctx.fill();
     }
   }
@@ -431,29 +516,38 @@
 
   function animateParticles() {
     ctx.clearRect(0, 0, w, h);
+    
+    // Dibujar partículas
     particlesArray.forEach(p => {
       p.update();
       p.draw();
     });
-    requestAnimationFrame(animateParticles);
+    
+    animationFrameId = requestAnimationFrame(animateParticles);
   }
 
-  // Partículas externas
+  // Partículas externas - Versión corregida
   const externalCanvas = document.getElementById('external-particles');
   const externalCtx = externalCanvas.getContext('2d');
   let ew, eh;
   let externalParticlesArray = [];
+  let externalAnimationFrameId;
 
   function resizeExternal() {
     ew = window.innerWidth;
     eh = window.innerHeight;
     externalCanvas.width = ew;
     externalCanvas.height = eh;
+    
+    // Asegurar relación de aspecto correcta
+    const aspectRatio = ew / eh;
+    externalCtx.setTransform(1, 0, 0, 1, 0, 0);
+    if(aspectRatio > 1) {
+      externalCtx.scale(1, 1);
+    } else {
+      externalCtx.scale(1, 1);
+    }
   }
-
-  window.addEventListener('resize', () => {
-    resizeExternal();
-  });
 
   class ExternalParticle {
     constructor() {
@@ -481,13 +575,19 @@
 
     draw() {
       externalCtx.beginPath();
-      let gradient = externalCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 4);
-      gradient.addColorStop(0, `rgba(255, 255, 170, ${this.opacity})`);
-      gradient.addColorStop(1, 'rgba(255, 255, 170, 0)');
+      // Círculos perfectos
+      externalCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      
+      const gradient = externalCtx.createRadialGradient(
+        this.x, this.y, 0,
+        this.x, this.y, this.radius * 2
+      );
+      gradient.addColorStop(0, `rgba(0, 255, 255, ${this.opacity})`);
+      gradient.addColorStop(1, 'rgba(0, 255, 255, 0)');
+      
       externalCtx.fillStyle = gradient;
-      externalCtx.shadowColor = `rgba(255, 255, 170, ${this.opacity})`;
-      externalCtx.shadowBlur = 15;
-      externalCtx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+      externalCtx.shadowColor = `rgba(0, 255, 255, ${this.opacity * 0.5})`;
+      externalCtx.shadowBlur = 10;
       externalCtx.fill();
     }
   }
@@ -501,11 +601,13 @@
 
   function animateExternalParticles() {
     externalCtx.clearRect(0, 0, ew, eh);
+    
     externalParticlesArray.forEach(p => {
       p.update();
       p.draw();
     });
-    requestAnimationFrame(animateExternalParticles);
+    
+    externalAnimationFrameId = requestAnimationFrame(animateExternalParticles);
   }
 
   // Apertura y cierre
@@ -513,7 +615,6 @@
   const envelopeContainer = document.getElementById('envelope-container');
   const openBtn = document.getElementById('open-button');
   const closeBtn = document.getElementById('close-button');
-  const closedText = document.querySelectorAll('#closed-text');
   const content = document.getElementById('content');
 
   openBtn.addEventListener('click', () => {
@@ -521,7 +622,6 @@
     envelopeContainer.classList.add('fullscreen');
     openBtn.style.display = 'none';
     closeBtn.style.display = 'block';
-    // ocultar todos closed-text fuera y dentro
     document.querySelectorAll('#closed-text').forEach(el => el.style.display = 'none');
     content.classList.add('visible');
     content.style.display = 'flex';
@@ -540,12 +640,12 @@
     envelopeContainer.classList.remove('fullscreen');
     openBtn.style.display = 'block';
     closeBtn.style.display = 'none';
-    // mostrar todos closed-text fuera y dentro
     document.querySelectorAll('#closed-text').forEach(el => el.style.display = 'block');
     content.classList.remove('visible');
     content.style.display = 'none';
 
     canvas.style.display = 'none';
+    cancelAnimationFrame(animationFrameId);
 
     const audio = document.getElementById('audio');
     if(!audio.paused) audio.pause();
@@ -566,9 +666,25 @@
     });
   });
 
-  resizeExternal();
-  initExternalParticles();
-  animateExternalParticles();
+  // Mostrar primera sección al cargar
+  window.addEventListener('load', () => {
+    if(sections.length > 0) {
+      sections[0].classList.add('visible');
+    }
+  });
+
+  // Inicialización
+  window.addEventListener('load', () => {
+    resizeExternal();
+    initExternalParticles();
+    animateExternalParticles();
+  });
+
+  // Limpieza al cerrar
+  window.addEventListener('beforeunload', () => {
+    cancelAnimationFrame(animationFrameId);
+    cancelAnimationFrame(externalAnimationFrameId);
+  });
 
 </script>
 
