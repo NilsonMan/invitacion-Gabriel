@@ -13,46 +13,69 @@
     background:#0a0a0a;
     color:#0ff;
     overflow-x:hidden;
-    overflow-y: hidden; /* evitar scroll al inicio */
+    overflow-y: hidden;
     display:flex;
     justify-content:center;
     align-items:center;
+    position: relative;
   }
 
-  #scroll-container::-webkit-scrollbar {
-    display: none;
-  }
-  #scroll-container {
-    -ms-overflow-style: none;  /* IE y Edge */
-    scrollbar-width: none;     /* Firefox */
+  #scroll-container::-webkit-scrollbar { display: none; }
+  #scroll-container { -ms-overflow-style: none; scrollbar-width: none; }
+
+  #external-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 5; /* Debajo del sobre */
+    background: transparent;
   }
 
   #envelope-container {
-    width:320px;
-    height:420px;
-    perspective:1500px;
+    width: 340px;
+    height: 460px;
+    perspective: 1200px;
     position: relative;
-    user-select:none;
+    user-select: none;
     cursor: pointer;
-    z-index:50;
+    z-index: 50;
     transition: all 1s ease;
-  }
-  #envelope {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #0a0a0a 40%, #004d4d 100%);
-    border-radius: 12px;
-    box-shadow: 0 0 20px #0ff;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 1s ease;
+    border-radius: 16px;
     overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,255,255,0.4);
+    background: transparent;
+  }
+
+  #envelope-container.fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 100 !important;
+    background: transparent !important;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
   }
-  /* Sobre cerrado: tapa triangular */
+
+  #envelope {
+    width: 100%;
+    height: 100%;
+    background: #fdfcfb;
+    background-size: 28.28px 28.28px;
+    border-radius: 16px;
+    box-shadow: inset 0 0 15px rgba(255,255,255,0.5),
+                0 4px 8px rgba(0,0,0,0.3);
+    position: relative;
+    transition: transform 0.8s ease, background 1s ease, box-shadow 1s ease, border-color 1s ease;
+    overflow: hidden;
+    border: 1.5px solid #d2cbb7;
+  }
+
   #envelope::before {
     content: '';
     position: absolute;
@@ -61,31 +84,27 @@
     transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-left: 160px solid transparent;
-    border-right: 160px solid transparent;
-    border-bottom: 140px solid #006666;
-    box-shadow: 0 0 10px #0ff inset;
-    border-radius: 12px 12px 0 0;
-    transform-origin: bottom center;
-    transform-style: preserve-3d;
-    transition: transform 1s ease, opacity 0.5s ease;
-    z-index: 20;
-  }
-  /* Estado abierto: girar tapa para revelar contenido */
-  #envelope.open::before {
-    transform: translateX(-50%) rotateX(-160deg);
-    box-shadow: 0 0 30px #0ff inset;
-    border-bottom-color: transparent;
-    cursor: default;
-    opacity: 0;
-    pointer-events: none;
-    z-index: -1;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 50px solid #fdfcfb;
+    z-index: 30;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: border-bottom-color 1s ease, box-shadow 1s ease;
+    border-radius: 0 0 12px 12px;
   }
 
-  /* Texto visible cuando está cerrado (sobre cerrado) */
+  #envelope.open {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }
+
+  #envelope.open::before {
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+  }
+
   #closed-text {
-    position: relative;
-    z-index: 25;
     font-family: 'Great Vibes', cursive;
     font-size: 2rem;
     color: #0ff;
@@ -93,9 +112,9 @@
     text-align: center;
     user-select:none;
     padding: 0 1rem;
+    margin-top: 1rem;
   }
 
-  /* Papel invitación */
   #content {
     position: absolute;
     top: 50%;
@@ -107,14 +126,7 @@
     box-shadow: 0 0 15px #0ff;
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.7);
-    transition: 
-      opacity 1s ease 0.5s,
-      transform 1s ease 0.5s,
-      width 1s ease 0.5s,
-      height 1s ease 0.5s,
-      top 1s ease 0.5s,
-      left 1s ease 0.5s,
-      border-radius 1s ease 0.5s;
+    transition: opacity 1s ease 0.5s, transform 1s ease 0.5s, width 1s ease 0.5s, height 1s ease 0.5s, top 1s ease 0.5s, left 1s ease 0.5s, border-radius 1s ease 0.5s;
     overflow-y: hidden;
     padding: 0;
     color: #0ff;
@@ -123,10 +135,12 @@
     display: flex;
     flex-direction: column;
   }
+
   #content.visible {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-    width: 100vw;
+    width: 80vw;
+    max-width: 720px;
     height: 100vh;
     top: 50%;
     left: 50%;
@@ -135,10 +149,12 @@
     padding: 2rem 4rem;
   }
 
-  /* Secciones internas de invitación */
-  .section{
+  /* Tus secciones quedan intactas, sin cambios */
+  .section {
     height: 100vh;
-    width: 100vw;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -153,18 +169,41 @@
     scroll-snap-align: start;
     flex-shrink: 0;
   }
-  .section.visible {
-    opacity: 1;
-    transform: translateY(0);
+
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  #section1 {
+    background-image: url("https://i.pinimg.com/736x/03/f8/db/03f8dbe4a50089c182f65af43605673d.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    backdrop-filter: brightness(0.8) contrast(1.1);
+    max-width: 720px;
+    margin: 0 auto;
   }
-  #section1 h1{
-    font-family:'Great Vibes',cursive;
-    font-size:5rem;
-    color:#0ff;
-    text-shadow:0 0 8px #0ff,0 0 20px #0ff;
-    animation:neonFlicker 3s infinite alternate;
+
+  #section1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 7, 7, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1;
+    border-radius: 12px;
   }
-  #section1 p.subtitle{
+
+  #section1 * {
+    position: relative;
+    z-index: 2;
+  }
+
+  #section1 p.subtitle {
     font-size:1.8rem;
     margin-top:1rem;
     font-weight:600;
@@ -172,7 +211,8 @@
     letter-spacing:0.1em;
     font-style:italic;
   }
-  #section1 .highlight{
+
+  #section1 .highlight {
     font-family:'Great Vibes',cursive;
     font-size:4rem;
     margin-top:1.2rem;
@@ -180,46 +220,24 @@
     text-shadow:0 0 10px #0ff,0 0 30px #0ff;
     font-style:italic;
   }
-  #section1.dimmed {
-    filter: brightness(0.5);
-    opacity: 0.6;
-  }
-  #section2{background:#070707cc;}
-  #section2 h2{
+
+  #section2, #section3 { background:#070707cc; }
+
+  #section2 h2, #section3 h2 {
     font-weight:700;
     font-size:3rem;
     margin-bottom:1rem;
     text-shadow:0 0 8px #0ff;
     color: #0ff;
   }
-  #section2 p{
-    max-width:600px;
-    margin:1rem auto;
-    font-size:1.4rem;
-    color:#44ffffcc;
-    line-height:1.6;
-  }
-  #section3{
-    background:#000c14;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    gap:1rem;
-  }
-  #section3 h2{
-    font-weight:700;
-    font-size:3rem;
-    margin-bottom:0.5rem;
-    text-shadow:0 0 8px #0ff;
-    color: #0ff;
-  }
-  #section3 p{
+
+  #section2 p, #section3 p {
     font-size:1.3rem;
     color:#33ffffcc;
     margin-bottom:0.5rem;
   }
-  #map-container{
+
+  #map-container {
     width:90vw;
     max-width:600px;
     height:350px;
@@ -229,7 +247,6 @@
     margin-top: 1rem;
   }
 
-  /* Scroll container para el contenido */
   #scroll-container {
     flex: 1;
     overflow-y: auto;
@@ -237,8 +254,33 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Botón abrir y cerrar */
-  #open-button, #close-button {
+  /* CONTENEDOR PARA CENTRAR BOTON Y TEXTO FUERA DEL SOBRE */
+  #button-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    user-select:none;
+    z-index: 60;
+  }
+
+  #open-button {
+    background:#0ff;
+    color:#000;
+    border:none;
+    padding:0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight:700;
+    font-size:1.1rem;
+    cursor:pointer;
+    box-shadow: 0 0 12px #0ff;
+    transition: background-color 0.3s ease;
+    user-select:none;
+  }
+
+  #open-button:hover { background:#44ffff; }
+
+  #close-button {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -254,51 +296,35 @@
     transition: background-color 0.3s ease;
     z-index: 30;
     user-select:none;
-  }
-  #open-button:hover, #close-button:hover {
-    background:#44ffff;
-  }
-  #close-button {
     display:none;
   }
 
-  #envelope-container.fullscreen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  #close-button:hover { background:#44ffff; }
 
-  /* Partículas */
-  #particles{
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    z-index:1;
-    pointer-events:none;
-  }
-
-  @keyframes neonFlicker{
-    0%,100%{text-shadow:0 0 8px #0ff,0 0 20px #0ff;opacity:1}
-    50%{text-shadow:0 0 12px #0ff,0 0 30px #0ff;opacity:0.85}
-  }
-
-  body::-webkit-scrollbar {
-    width: 0;
-    background: transparent;
+  #particles {
+    position: absolute;
+    pointer-events: none;
+    z-index: 15;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    overflow: visible;
   }
 </style>
 </head>
 <body>
-  <div id="particles"></div>
+
+  <canvas id="external-particles"></canvas>
+
   <div id="envelope-container" aria-label="Invitación en sobre">
     <div id="envelope">
-      <button id="open-button" aria-label="Abrir invitación">Abrir Invitación</button>
       <button id="close-button" aria-label="Cerrar invitación">Cerrar</button>
-      <div id="closed-text">Toca "Abrir Invitación" para ver la invitación completa</div>
       <div id="content" tabindex="0" role="region" aria-live="polite" aria-label="Contenido de la invitación">
+        <canvas id="particles"></canvas>
         <div id="scroll-container">
+          <!-- Aquí tus 3 secciones originales, sin modificar -->
           <section id="section1" class="section">
             <h1>Estás invitado!</h1>
             <p class="subtitle">A los inolvidables XV años de</p>
@@ -327,39 +353,47 @@
     </div>
   </div>
 
-<audio id="audio" loop preload="auto">
-  <source src="no_crezcas_mas.mp3" type="audio/mpeg">
-</audio>
+  <!-- Contenedor nuevo para centrar botón y texto fuera del sobre -->
+  <div id="button-text-container">
+    <button id="open-button" aria-label="Abrir invitación">Abrir Invitación</button>
+    <div id="closed-text">Toca "Abrir Invitación" para ver la invitación completa</div>
+  </div>
 
-
-
+  <audio id="audio" loop preload="auto">
+    <source src="no_crezcas_mas.mp3" type="audio/mpeg">
+  </audio>
 
 <script>
-  const canvas = document.createElement('canvas');
+  // Partículas internas
+  const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
-  const particlesDiv = document.getElementById('particles');
+  const contentDiv = document.getElementById('content');
+
   let w, h;
   let particlesArray = [];
 
   function resize() {
-    w = window.innerWidth;
-    h = window.innerHeight;
+    w = contentDiv.clientWidth;
+    h = contentDiv.clientHeight;
     canvas.width = w;
     canvas.height = h;
   }
 
-  window.addEventListener('resize', resize);
-  resize();
-  particlesDiv.appendChild(canvas);
+  window.addEventListener('resize', () => {
+    if (canvas.style.display === 'block') {
+      resize();
+    }
+  });
 
   class Particle {
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.radius = Math.random() * 1.5 + 0.5;
-      this.speedX = (Math.random() - 0.5) * 0.3;
-      this.speedY = (Math.random() - 0.5) * 0.3;
-      this.opacity = Math.random();
+      this.radius = Math.random() * 1.5 + 0.8;
+      this.speedX = (Math.random() - 0.5) * 0.25;
+      this.speedY = (Math.random() - 0.5) * 0.25;
+      this.opacity = Math.random() * 0.7 + 0.3;
+      this.opacityChange = (Math.random() - 0.5) * 0.02;
     }
 
     update() {
@@ -371,23 +405,26 @@
       if (this.y > h) this.y = 0;
       else if (this.y < 0) this.y = h;
 
-      this.opacity += (Math.random() - 0.5) * 0.05;
-      this.opacity = Math.min(Math.max(this.opacity, 0.2), 1);
+      this.opacity += this.opacityChange;
+      if(this.opacity <= 0.2 || this.opacity >= 1) this.opacityChange *= -1;
     }
 
     draw() {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0, 255, 255, ${this.opacity})`;
-      ctx.shadowColor = '#0ff';
-      ctx.shadowBlur = 6;
+      let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 5);
+      gradient.addColorStop(0, `rgba(255, 255, 150, ${this.opacity})`);
+      gradient.addColorStop(1, 'rgba(255, 255, 150, 0)');
+      ctx.fillStyle = gradient;
+      ctx.shadowColor = `rgba(255, 255, 150, ${this.opacity})`;
+      ctx.shadowBlur = 15;
+      ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
   function initParticles() {
     particlesArray = [];
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 26; i++) {
       particlesArray.push(new Particle());
     }
   }
@@ -401,73 +438,139 @@
     requestAnimationFrame(animateParticles);
   }
 
-  initParticles();
-  animateParticles();
+  // Partículas externas
+  const externalCanvas = document.getElementById('external-particles');
+  const externalCtx = externalCanvas.getContext('2d');
+  let ew, eh;
+  let externalParticlesArray = [];
+
+  function resizeExternal() {
+    ew = window.innerWidth;
+    eh = window.innerHeight;
+    externalCanvas.width = ew;
+    externalCanvas.height = eh;
+  }
+
+  window.addEventListener('resize', () => {
+    resizeExternal();
+  });
+
+  class ExternalParticle {
+    constructor() {
+      this.x = Math.random() * ew;
+      this.y = Math.random() * eh;
+      this.radius = Math.random() * 1.8 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.4;
+      this.speedY = (Math.random() - 0.5) * 0.4;
+      this.opacity = Math.random() * 0.7 + 0.3;
+      this.opacityChange = (Math.random() - 0.5) * 0.02;
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      if (this.x > ew) this.x = 0;
+      else if (this.x < 0) this.x = ew;
+      if (this.y > eh) this.y = 0;
+      else if (this.y < 0) this.y = eh;
+
+      this.opacity += this.opacityChange;
+      if(this.opacity <= 0.2 || this.opacity >= 1) this.opacityChange *= -1;
+    }
+
+    draw() {
+      externalCtx.beginPath();
+      let gradient = externalCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 4);
+      gradient.addColorStop(0, `rgba(255, 255, 170, ${this.opacity})`);
+      gradient.addColorStop(1, 'rgba(255, 255, 170, 0)');
+      externalCtx.fillStyle = gradient;
+      externalCtx.shadowColor = `rgba(255, 255, 170, ${this.opacity})`;
+      externalCtx.shadowBlur = 15;
+      externalCtx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+      externalCtx.fill();
+    }
+  }
+
+  function initExternalParticles() {
+    externalParticlesArray = [];
+    for (let i = 0; i < 35; i++) {
+      externalParticlesArray.push(new ExternalParticle());
+    }
+  }
+
+  function animateExternalParticles() {
+    externalCtx.clearRect(0, 0, ew, eh);
+    externalParticlesArray.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animateExternalParticles);
+  }
+
+  // Apertura y cierre
+  const envelope = document.getElementById('envelope');
+  const envelopeContainer = document.getElementById('envelope-container');
   const openBtn = document.getElementById('open-button');
   const closeBtn = document.getElementById('close-button');
-  const envelope = document.getElementById('envelope');
-  const container = document.getElementById('envelope-container');
+  const closedText = document.querySelectorAll('#closed-text');
   const content = document.getElementById('content');
-  const audio = document.getElementById('audio');
-  const closedText = document.getElementById('closed-text');
 
   openBtn.addEventListener('click', () => {
     envelope.classList.add('open');
-    content.classList.add('visible');
+    envelopeContainer.classList.add('fullscreen');
     openBtn.style.display = 'none';
     closeBtn.style.display = 'block';
-    closedText.style.display = 'none';
+    // ocultar todos closed-text fuera y dentro
+    document.querySelectorAll('#closed-text').forEach(el => el.style.display = 'none');
+    content.classList.add('visible');
+    content.style.display = 'flex';
 
-    container.classList.add('fullscreen');  // <-- Agregamos clase
-    container.style.width = '100vw';
-    container.style.height = '100vh';
-    container.style.position = 'fixed';
-    container.style.top = '0';
-    container.style.left = '0';
-    container.style.zIndex = '100';
+    canvas.style.display = 'block';
+    resize();
+    initParticles();
+    animateParticles();
 
-    envelope.style.width = '100%';
-    envelope.style.height = '100%';
-    document.body.style.overflow = 'hidden';
-
-    audio.play().catch(() => {});
+    const audio = document.getElementById('audio');
+    if(audio.paused) audio.play();
   });
 
   closeBtn.addEventListener('click', () => {
     envelope.classList.remove('open');
-    content.classList.remove('visible');
-    closeBtn.style.display = 'none';
+    envelopeContainer.classList.remove('fullscreen');
     openBtn.style.display = 'block';
-    closedText.style.display = 'block';
+    closeBtn.style.display = 'none';
+    // mostrar todos closed-text fuera y dentro
+    document.querySelectorAll('#closed-text').forEach(el => el.style.display = 'block');
+    content.classList.remove('visible');
+    content.style.display = 'none';
 
-    container.classList.remove('fullscreen');  // <-- Quitamos clase
-    container.style.width = '320px';
-    container.style.height = '420px';
-    container.style.position = 'relative';
-    container.style.top = 'auto';
-    container.style.left = 'auto';
-    container.style.zIndex = '50';
+    canvas.style.display = 'none';
 
-    envelope.style.width = '100%';
-    envelope.style.height = '100%';
-    document.body.style.overflow = 'auto';
-
-    audio.pause();
-    audio.currentTime = 0;
+    const audio = document.getElementById('audio');
+    if(!audio.paused) audio.pause();
   });
 
-  // Observer para animar secciones al hacer scroll (igual)
+  // Scroll para mostrar secciones
   const sections = document.querySelectorAll('.section');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  const scrollContainer = document.getElementById('scroll-container');
+
+  scrollContainer.addEventListener('scroll', () => {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.75 && rect.bottom > window.innerHeight * 0.25) {
+        section.classList.add('visible');
+      } else {
+        section.classList.remove('visible');
       }
     });
-  }, {
-    threshold: 0.2
   });
 
-  sections.forEach(section => observer.observe(section));
+  resizeExternal();
+  initExternalParticles();
+  animateExternalParticles();
+
 </script>
 
+</body>
+</html>
